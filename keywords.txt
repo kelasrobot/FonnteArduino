@@ -1,0 +1,6 @@
+FonnteArduino	KEYWORD1
+sendMessage	KEYWORD2
+sendMessageWithDelay	KEYWORD2
+setCountryCode	KEYWORD2
+getCountryCode	KEYWORD2
+connectToWiFi	KEYWORD2
