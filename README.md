@@ -1,108 +1,76 @@
-# FonnteArduino Library
+# FonnteArduino
 
-**FonnteArduino** is an Arduino library that simplifies sending WhatsApp messages via the **Fonnte API** using ESP32/ESP8266. This library allows you to connect to a WiFi network, configure your API token, and send messages easily through Fonnte's platform. It is ideal for IoT applications where notifications or alerts need to be sent directly to WhatsApp.
+**FonnteArduino** adalah library Arduino yang memudahkan pengiriman pesan WhatsApp melalui API Fonnte menggunakan ESP32 atau ESP8266. Library ini memungkinkan Anda untuk menghubungkan perangkat ke jaringan WiFi, mengonfigurasi token API Anda, dan mengirim pesan dengan mudah melalui platform Fonnte. Library ini ideal digunakan untuk aplikasi IoT yang memerlukan notifikasi atau peringatan langsung melalui WhatsApp.
 
-## Features
-- Simple interface for sending WhatsApp messages through the Fonnte API.
-- Built-in WiFi connection support (ESP32/ESP8266).
-- Set and change country code dynamically.
-- Send messages with an optional delay.
-- Supports both ESP32 and ESP8266.
+## Fitur
 
-## Installation
+- Menghubungkan ke jaringan WiFi dengan ESP32 atau ESP8266
+- Mengirim pesan WhatsApp melalui Fonnte API
+- Konfigurasi kode negara yang dapat disesuaikan
+- Mendukung pengiriman pesan dengan atau tanpa delay
 
-1. Download this repository and extract it.
-2. Move the folder `FonnteArduino` to your Arduino libraries directory:
-   - On Windows: `Documents/Arduino/libraries/`
-   - On Mac: `~/Documents/Arduino/libraries/`
-   - On Linux: `~/Arduino/libraries/`
-3. Restart your Arduino IDE.
-4. Go to **Sketch > Include Library > FonnteArduino** to include the library in your project.
+## Cara Mendapatkan Token Fonnte
 
-## Usage
+Untuk menggunakan API Fonnte, Anda perlu mendaftar dan mendapatkan token. Anda bisa mendaftar melalui link berikut:  
+[Daftar Fonnte](https://bit.ly/daftar-fonnte)
 
-### 1. Basic Example to Send WhatsApp Message
+## Instalasi
 
-```cpp
-#include <FonnteArduino.h>
+1. **Unduh atau Clone Repository ini**:  
+   Anda bisa mengunduh file `.zip` atau melakukan clone repository ini ke komputer Anda.
 
-// Initialize the library with your Fonnte API token
-FonnteArduino fonnte("YOUR_API_TOKEN");  // Replace with your actual Fonnte token
+2. **Install Library melalui Arduino IDE**:  
+   - Buka Arduino IDE
+   - Pilih **Sketch** > **Include Library** > **Add .ZIP Library**
+   - Pilih file `.zip` dari library **FonnteArduino** yang sudah diunduh.
 
-void setup() {
-  Serial.begin(115200);
+3. **Gunakan Library**:  
+   Setelah library terinstal, Anda dapat langsung menggunakan **FonnteArduino** di sketch Arduino Anda.
 
-  // Connect to WiFi
-  fonnte.connectToWiFi("your-SSID", "your-password");  // Replace with your WiFi credentials
+## Contoh Penggunaan
 
-  // Send a message (default country code is +62)
-  fonnte.sendMessage("08123456789", "Hello from FonnteArduino!");
-}
-
-void loop() {
-  // No looping necessary
-}
-```
-
-### 2. Example with Delay and Custom Country Code
+Berikut adalah contoh penggunaan sederhana library ini:
 
 ```cpp
 #include <FonnteArduino.h>
 
-FonnteArduino fonnte("YOUR_API_TOKEN");  // Replace with your actual Fonnte token
+// Inisialisasi objek FonnteArduino dengan token API Anda
+FonnteArduino fonnte("YOUR_FONNTE_TOKEN");
 
 void setup() {
   Serial.begin(115200);
-  
-  // Connect to WiFi
-  fonnte.connectToWiFi("your-SSID", "your-password");
 
-  // Change country code to +1 (USA) and send a delayed message
-  fonnte.setCountryCode("1");  // USA country code
-  fonnte.sendMessageWithDelay("1234567890", "Hello from USA!", 5000);  // Delay for 5 seconds
+  // Menghubungkan ke WiFi
+  fonnte.connectToWiFi("SSID", "PASSWORD");
+
+  // Mengirim pesan WhatsApp
+  fonnte.sendMessage("08123456789", "Hello, ini pesan dari ESP32!");
 }
 
 void loop() {
-  // No looping necessary
+  // Tidak ada aktivitas di loop
 }
 ```
 
-### API Reference
+## Fitur Tambahan
 
-#### **`FonnteArduino(String token)`**
-Constructor to initialize the library with your API token.
-- `token`: Your Fonnte API token.
+1. **Mengirim Pesan dengan Delay**  
+   Anda bisa mengirim pesan dengan delay menggunakan fungsi `sendMessageWithDelay()`. Contoh:
+   ```cpp
+   fonnte.sendMessageWithDelay("08123456789", "Pesan dengan delay", 5000); // Delay 5 detik
+   ```
 
-#### **`void connectToWiFi(const char* ssid, const char* password)`**
-Connects to the specified WiFi network.
-- `ssid`: The SSID (name) of the WiFi network.
-- `password`: The password for the WiFi network.
+2. **Mengubah Kode Negara**  
+   Secara default, kode negara adalah "62" (Indonesia), tetapi Anda bisa mengubahnya menggunakan fungsi `setCountryCode()`. Contoh:
+   ```cpp
+   fonnte.setCountryCode("1"); // Mengubah kode negara menjadi USA (1)
+   ```
 
-#### **`void sendMessage(String target, String message, String countryCode = "62")`**
-Sends a WhatsApp message.
-- `target`: Recipient's phone number.
-- `message`: The message content.
-- `countryCode` (optional): The recipient's country code (default is `"62"` for Indonesia).
+## Uji Coba
 
-#### **`void sendMessageWithDelay(String target, String message, unsigned long delayMs, String countryCode = "62")`**
-Sends a WhatsApp message after a specified delay.
-- `target`: Recipient's phone number.
-- `message`: The message content.
-- `delayMs`: The delay in milliseconds before the message is sent.
-- `countryCode` (optional): The recipient's country code (default is `"62"`).
+- Library ini sudah berhasil diuji di **ESP32** dengan Library Board versi **2.0.17**.
+- Library ini juga berhasil diuji di **ESP8266** dengan Library Board versi **2.7.4**.
 
-#### **`void setCountryCode(String countryCode)`**
-Sets the country code for future messages.
-- `countryCode`: The new default country code.
+## Lisensi
 
-#### **`String getCountryCode()`**
-Returns the current country code being used for messages.
-
-## Contributing
-Contributions are welcome! Please create a pull request or raise an issue for any bug fixes, improvements, or feature requests.
-
-## License
-This library is open-source and available under the **MIT License**.
-
-## Author
-- Ajang Rahmat
+Library ini dirilis di bawah lisensi MIT. Silakan lihat file [LICENSE](./LICENSE) untuk detail lebih lanjut.
