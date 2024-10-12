@@ -1,15 +1,22 @@
 #ifndef FONNTE_ARDUINO_H
 #define FONNTE_ARDUINO_H
 
-#include <Arduino.h>
-#include <WiFi.h>
-#include <HTTPClient.h>
+#if defined(ESP8266)
+  #include <ESP8266WiFi.h>
+  #include <ESP8266HTTPClient.h>
+  #include <WiFiClientSecureBearSSL.h>
+#elif defined(ESP32)
+  #include <WiFi.h>
+  #include <HTTPClient.h>
+#endif
 
 class FonnteArduino {
   private:
-    const char* token;
-    const char* serverName = "https://api.fonnte.com/send"; // URL API Fonnte
-    String countryCode = "62"; // Default country code Indonesia
+    String apiToken;
+    const char* ssid;
+    const char* password;
+    const char* serverName = "https://api.fonnte.com/send"; // API URL
+    String countryCode = "62"; // Default country code for Indonesia
 
   public:
     // Constructor untuk inisialisasi token
